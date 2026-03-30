@@ -1,38 +1,44 @@
 package vgu.pe2026.ttt.basic;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Scanner;
+
+import static vgu.pe2026.ttt.basic.Constant.COMPUTER;
+import static vgu.pe2026.ttt.basic.Constant.HUMAN;
 
 public class Game {
 
 	public static void main(String[] args) {
-		// TODO Auto-generated method stub
-		int starter = Integer.parseInt(args[0]);
+
+		int currentPlayerIndex = Integer.parseInt(args[0]);
 		Scanner scanner = new Scanner(System.in);
 		Board board = new Board();
-		Player human = new Human(1, scanner);
-		Computer computer = new Computer(2);
+
+		Map<Integer, Player> allPlayers = new HashMap<>();
+		allPlayers.put(HUMAN, new Human(HUMAN, scanner));
+		allPlayers.put(COMPUTER, new Computer(COMPUTER));
 
 		board.display();
-		Player currentPlayer = (starter == 1) ? human : computer;
+		Player currentPlayer = allPlayers.get(currentPlayerIndex);
 
 		while (true) {
 			currentPlayer.makeMove(board);
 			board.display();
 
-			if (board.isWinner(currentPlayer.getSymbol())) {
-				if (currentPlayer.getSymbol() == 1) {
-					System.out.println("Human wins");
-				} else {
-					System.out.println("Computer wins");
-				}
+			if (board.hasWinner()) {
+				System.out.println(currentPlayer.namePlayerType() + " win");
 				break;
 			}
-			if (board.isFull()) {
+
+			// isFull does not mean
+			if (board.isDraw()) {
 				System.out.println("It's draw");
 				break;
 			}
 
-			currentPlayer = (currentPlayer == human) ? computer : human;
+			currentPlayerIndex = currentPlayerIndex % allPlayers.size() + 1;
+			currentPlayer = allPlayers.get(currentPlayerIndex);
 		}
 		scanner.close();
 	}

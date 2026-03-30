@@ -18,14 +18,25 @@ public class Human extends Player {
 		int move;
 		while (true) {
 			System.out.println("Enter your move: ");
-			move = scanner.nextInt();
-			if (board.isValidMove(move)) {
-				System.out.println("Human choose move: " + move);
-				board.placeMove(move, getSymbol());
-				break;
-			} else {
-				System.out.println("Invalid move");
+
+			try {
+				move = Integer.parseInt(scanner.nextLine());
+				if (board.isValidMove(move)) {
+					System.out.println("Human choose move: " + move);
+					board.placeMove(move, getplayerTypeSymbol());
+					break;
+				} else {
+					System.out.println("Invalid move");
+				}
+			} catch (NumberFormatException e) {
+				System.out.println("Please input a integer from 1 to 9");
 			}
+
 		}
+	}
+
+	@Override
+	public String namePlayerType() {
+		return "Human";
 	}
 }

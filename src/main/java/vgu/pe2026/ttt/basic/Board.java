@@ -17,12 +17,10 @@ public class Board {
 		}
 	}
 
-	// Check valid move
 	public boolean isValidMove(int move) {
 		return move >= 1 && move <= 9 && cells[move - 1] == 0;
 	}
 
-	// Enter the player move
 	public void placeMove(int move, int symbol) {
 		cells[move - 1] = symbol;
 	}
@@ -36,8 +34,16 @@ public class Board {
 		return true;
 	}
 
-	// Check if the winning game
-	public boolean isWinner(int symbol) {
+	public boolean isDraw() {
+		if (hasWinner())
+			return false;
+		if (!isFull())
+			return false;
+		return true;
+	}
+
+	// Check if the winning game and it there are no Winner -> return 0
+	public int checkWinner() {
 		int[][] winPatterns = {
 				{ 1, 2, 3 }, { 4, 5, 6 }, { 7, 8, 9 }, // rows
 				{ 1, 4, 7 }, { 2, 5, 8 }, { 3, 6, 9 }, // cols
@@ -49,11 +55,15 @@ public class Board {
 		// That's why the wining pattern need to -1 to have the correct position in
 		// cells
 		for (int[] winPattern : winPatterns) {
-			if (cells[winPattern[0] - 1] == symbol && cells[winPattern[1] - 1] == symbol
-					&& cells[winPattern[2] - 1] == symbol) {
-				return true;
+			if (cells[winPattern[0] - 1] == cells[winPattern[1] - 1]
+					& cells[winPattern[1] - 1] == cells[winPattern[2] - 1]) {
+				return cells[winPattern[0] - 1];
 			}
 		}
-		return false;
+		return 0;
+	}
+
+	public boolean hasWinner() {
+		return checkWinner() != 0;
 	}
 }

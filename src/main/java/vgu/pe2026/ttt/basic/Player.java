@@ -1,15 +1,17 @@
 package vgu.pe2026.ttt.basic;
 
 abstract class Player {
-	private int symbol; // 1 for human 2 for computer
+	private int playerTypeSymbol; // 1 for human 2 for computer
 
-	public Player(int symbol) {
-		this.symbol = symbol;
+	public Player(int playerTypeSymbol) {
+		this.playerTypeSymbol = playerTypeSymbol;
 	}
 
 	public abstract void makeMove(Board board);
 
-	public int getSymbol() {
-		return symbol;
+	public abstract String namePlayerType();
+
+	public int getplayerTypeSymbol() {
+		return playerTypeSymbol;
 	}
 }
