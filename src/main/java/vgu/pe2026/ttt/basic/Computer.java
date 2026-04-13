@@ -11,15 +11,16 @@ public class Computer extends Player {
 	}
 
 	@Override
-	public void makeMove(Board board) {
+	public int makeMove(Board board) {
+		// TODO Auto-generated method stub
 		int move;
 		for (move = 1; move <= 9; move++) {
-			if (board.isValidMove(move)) {
+			if (isValidMove(move, board)) {
 				break;
 			}
 		}
 		System.out.println("Computer choose: " + move);
-		board.placeMove(move, getplayerTypeSymbol());
+		return move;
 	}
 
 	@Override

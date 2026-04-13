@@ -1,6 +1,8 @@
 vgu\pe2026\ttt\basic\Board.class
 vgu\pe2026\ttt\basic\Constant.class
-vgu\pe2026\ttt\basic\Game.class
 vgu\pe2026\ttt\basic\Player.class
 vgu\pe2026\ttt\basic\Human.class
+vgu\pe2026\ttt\basic\Board1D.class
+vgu\pe2026\ttt\basic\Board2D.class
+vgu\pe2026\ttt\basic\Game.class
 vgu\pe2026\ttt\basic\Computer.class

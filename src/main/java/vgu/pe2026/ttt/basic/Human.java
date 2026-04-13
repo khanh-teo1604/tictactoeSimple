@@ -1,5 +1,7 @@
 package vgu.pe2026.ttt.basic;
 
+import static vgu.pe2026.ttt.basic.Constant.NOT_INTEGER_MOVE;
+
 import java.util.Scanner;
 
 public class Human extends Player {
@@ -13,26 +15,16 @@ public class Human extends Player {
 	}
 
 	@Override
-	public void makeMove(Board board) {
-		// TODO Auto-generated method stub
+	public int makeMove(Board board) {
 		int move;
-		while (true) {
-			System.out.println("Enter your move: ");
-
-			try {
-				move = Integer.parseInt(scanner.nextLine());
-				if (board.isValidMove(move)) {
-					System.out.println("Human choose move: " + move);
-					board.placeMove(move, getplayerTypeSymbol());
-					break;
-				} else {
-					System.out.println("Invalid move");
-				}
-			} catch (NumberFormatException e) {
-				System.out.println("Please input a integer from 1 to 9");
-			}
-
+		System.out.print("Enter your move: ");
+		try {
+			move = Integer.parseInt(scanner.nextLine());
+		} catch (NumberFormatException e) {
+			// TODO: handle exception
+			return NOT_INTEGER_MOVE;
 		}
+		return move;
 	}
 
 	@Override

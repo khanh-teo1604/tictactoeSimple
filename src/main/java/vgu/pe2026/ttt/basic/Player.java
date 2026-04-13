@@ -7,11 +7,15 @@ abstract class Player {
 		this.playerTypeSymbol = playerTypeSymbol;
 	}
 
-	public abstract void makeMove(Board board);
+	public abstract int makeMove(Board board);
 
 	public abstract String namePlayerType();
 
 	public int getplayerTypeSymbol() {
 		return playerTypeSymbol;
+	}
+
+	public boolean isValidMove(int move, Board board) {
+		return board.isMoveWithinTheRange(move) && !board.isOccupied(move);
 	}
 }
