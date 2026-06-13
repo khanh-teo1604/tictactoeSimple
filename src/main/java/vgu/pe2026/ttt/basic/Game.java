@@ -1,60 +1,47 @@
 package vgu.pe2026.ttt.basic;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Scanner;
-
-import static vgu.pe2026.ttt.basic.Constant.COMPUTER;
-import static vgu.pe2026.ttt.basic.Constant.HUMAN;
-import static vgu.pe2026.ttt.basic.Constant.NOT_INTEGER_MOVE;
+import vgu.pe2026.ttt.basic.Constant.GameStatus;
 
 public class Game {
+    private final Board board;
+    private final MoveValidator moveValidator;
 
-	public static void main(String[] args) {
+    public Game(Board board) {
+        this.board = board;
+        this.moveValidator = new MoveValidator(board);
+    }
 
-		int currentPlayerIndex = Integer.parseInt(args[0]);
-		Scanner scanner = new Scanner(System.in);
-		Board1D board = new Board1D();
+    public GameMoveResult playMove(int move, int playerSymbol) {
+        String invalidMoveMessage = getInvalidMoveMessage(move);
+        if (!invalidMoveMessage.isEmpty()) {
+            return new GameMoveResult(GameStatus.USER_WRONG_INPUT, invalidMoveMessage, false);
+        }
 
-		Map<Integer, Player> allPlayers = new HashMap<>();
-		allPlayers.put(HUMAN, new Human(HUMAN, scanner));
-		allPlayers.put(COMPUTER, new Computer(COMPUTER));
+        board.placeMove(move, playerSymbol);
+        return getCurrentBoardStatus(playerSymbol, true);
+    }
 
-		board.display();
-		Player currentPlayer = allPlayers.get(currentPlayerIndex);
+    public GameMoveResult getCurrentBoardStatus(int lastPlayerSymbol) {
+        return getCurrentBoardStatus(lastPlayerSymbol, false);
+    }
 
-		while (true) {
-			int playerMove = currentPlayer.makeMove(board);
+    private GameMoveResult getCurrentBoardStatus(int lastPlayerSymbol, boolean boardChanged) {
+        if (board.checkWinner() != 0) {
+            return new GameMoveResult(GameStatus.GAME_OVER, "Player#" + lastPlayerSymbol + " won!", boardChanged);
+        }
 
-			if (playerMove == NOT_INTEGER_MOVE) {
-				System.out.println("Please input integer");
-				continue;
-			}
-			if (!board.isMoveWithinTheRange(playerMove)) {
-				System.out.println("Please input only from 1 to 9");
-				continue;
-			}
-			if (board.isOccupied(playerMove)) {
-				System.out.println("The move is Occupied, try another move");
-				continue;
-			}
-			board.placeMove(playerMove, currentPlayer.getplayerTypeSymbol());
-			board.display();
+        if (board.isFull()) {
+            return new GameMoveResult(GameStatus.GAME_OVER, "It is a draw!", boardChanged);
+        }
 
-			if (board.checkWinner() != 0) {
-				System.out.println(currentPlayer.namePlayerType() + " win");
-				break;
-			}
+        return new GameMoveResult(GameStatus.GAME_RUNNING, "", boardChanged);
+    }
 
-			if (board.isFull()) {
-				System.out.println("It's draw");
-				break;
-			}
+    public boolean isValidMove(int move) {
+        return moveValidator.isValidMove(move);
+    }
 
-			currentPlayerIndex = currentPlayerIndex % allPlayers.size() + 1;
-			currentPlayer = allPlayers.get(currentPlayerIndex);
-		}
-		scanner.close();
-	}
-
+    public String getInvalidMoveMessage(int move) {
+        return moveValidator.getInvalidMoveMessage(move);
+    }
 }

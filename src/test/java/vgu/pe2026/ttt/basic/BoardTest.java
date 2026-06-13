@@ -3,22 +3,64 @@ package vgu.pe2026.ttt.basic;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
-import static vgu.pe2026.ttt.basic.Constant.COMPUTER;
-import static vgu.pe2026.ttt.basic.Constant.HUMAN;
-import static vgu.pe2026.ttt.basic.Constant.EMPTY_CELL;
+import static vgu.pe2026.ttt.basic.Constant.Setting.EMPTY_CELL;
+
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.PipedInputStream;
+import java.io.PipedOutputStream;
+import java.io.PrintStream;
+import java.nio.charset.StandardCharsets;
 
 import org.junit.jupiter.api.*;
+
+import vgu.pe2026.ttt.basic.Constant.PlayerType;
 
 /**
  * Unit test for simple App.
  */
 public class BoardTest {
-
+    private final PrintStream originalOutput = System.out;
+    private PipedOutputStream outputStream;
+    private BufferedReader scanner;
     private final Board1D board = new Board1D();
+    private int HUMAN = PlayerType.HUMAN.getplayerTypeSymbol();
+    private int COMPUTER = PlayerType.COMPUTER.getplayerTypeSymbol();
+
+    @BeforeEach
+    void setup() {
+        outputStream = new PipedOutputStream();
+        PipedInputStream inputStream;
+
+        try {
+            inputStream = new PipedInputStream(outputStream);
+            scanner = new BufferedReader(new InputStreamReader(inputStream, StandardCharsets.UTF_8));
+        } catch (IOException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+        System.setOut(new PrintStream(outputStream, true));
+
+    }
+
+    @AfterEach
+    void tearDown() {
+        System.setOut(originalOutput);
+    }
 
     @Test
     public void shouldAnswerWithTrue() {
         assertTrue(true);
+    }
+
+    @Test
+    public void testDisplayBoard() throws IOException {
+        board.display();
+        String expectedOutput = " | 0 | 0 | 0 | ";
+        assertEquals(expectedOutput, scanner.readLine());
+        assertEquals(expectedOutput, scanner.readLine());
+        assertEquals(expectedOutput, scanner.readLine());
     }
 
     @Test

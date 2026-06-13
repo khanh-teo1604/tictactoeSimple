@@ -1,21 +1,31 @@
 package vgu.pe2026.ttt.basic;
 
-abstract class Player {
-	private int playerTypeSymbol; // 1 for human 2 for computer
+import java.util.Scanner;
 
-	public Player(int playerTypeSymbol) {
-		this.playerTypeSymbol = playerTypeSymbol;
+import vgu.pe2026.ttt.basic.Constant.PlayerType;
+
+public abstract class Player {
+	private int playerTypeSymbol;
+
+	public Player(PlayerType type) {
+		this.playerTypeSymbol = type.getplayerTypeSymbol();
 	}
 
 	public abstract int makeMove(Board board);
-
-	public abstract String namePlayerType();
 
 	public int getplayerTypeSymbol() {
 		return playerTypeSymbol;
 	}
 
 	public boolean isValidMove(int move, Board board) {
-		return board.isMoveWithinTheRange(move) && !board.isOccupied(move);
+		return new MoveValidator(board).isValidMove(move);
+	}
+
+	public static Player create(PlayerType type, Scanner scanner) {
+		return switch (type) {
+			case HUMAN -> new Human(type, scanner);
+			case COMPUTER -> new Computer(type);
+			default -> throw new IllegalArgumentException("Unsupported player type: " + type);
+		};
 	}
 }

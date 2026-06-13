@@ -2,12 +2,14 @@ package vgu.pe2026.ttt.basic;
 
 import java.util.Random;
 
+import vgu.pe2026.ttt.basic.Constant.PlayerType;
+
 public class Computer extends Player {
 
 	Random random = new Random();
 
-	public Computer(int symbol) {
-		super(symbol);
+	public Computer(PlayerType type) {
+		super(type);
 	}
 
 	@Override
@@ -19,12 +21,7 @@ public class Computer extends Player {
 				break;
 			}
 		}
-		System.out.println("Computer choose: " + move);
 		return move;
 	}
 
-	@Override
-	public String namePlayerType() {
-		return "Computer";
-	}
 }

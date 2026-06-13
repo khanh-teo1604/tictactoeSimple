@@ -1,8 +1,10 @@
 package vgu.pe2026.ttt.basic;
 
-import static vgu.pe2026.ttt.basic.Constant.EMPTY_CELL;
-import static vgu.pe2026.ttt.basic.Constant.NUMBER_COLUMN;
-import static vgu.pe2026.ttt.basic.Constant.NUMBER_ROWS;
+import static vgu.pe2026.ttt.basic.Constant.Setting.EMPTY_CELL;
+import static vgu.pe2026.ttt.basic.Constant.Setting.NUMBER_COLUMN;
+import static vgu.pe2026.ttt.basic.Constant.Setting.NUMBER_ROWS;
+
+import vgu.pe2026.ttt.basic.Constant.PlayerType;
 
 public class Board1D implements Board {
 	private int[] cells = new int[NUMBER_ROWS * NUMBER_COLUMN]; // Initialize
@@ -24,12 +26,40 @@ public class Board1D implements Board {
 	// Displayed table
 	@Override
 	public void display() {
+		System.out.print(displayBoard());
+	}
+
+	@Override
+	public String displayBoard() {
+		StringBuilder output = new StringBuilder();
 		for (int i = 0; i < NUMBER_ROWS; i++) {
 			for (int j = 0; j < NUMBER_COLUMN; j++) {
-				System.out.print(" | " + cells[i * NUMBER_COLUMN + j]);
+				output.append(" | ").append(cells[i * NUMBER_COLUMN + j]);
 			}
-			System.out.print(" | \n");
+			output.append(" | ").append(System.lineSeparator());
 		}
+		return output.toString();
+	}
+
+	private String displayCell(int cell) {
+		if (cell == PlayerType.HUMAN.getplayerTypeSymbol()) {
+			return "X";
+		}
+		if (cell == PlayerType.COMPUTER.getplayerTypeSymbol()) {
+			return "O";
+		}
+		return "_";
+	}
+
+	@Override
+	public int[][] getCells() {
+		int[][] snapshot = new int[NUMBER_ROWS][NUMBER_COLUMN];
+		for (int i = 0; i < NUMBER_ROWS; i++) {
+			for (int j = 0; j < NUMBER_COLUMN; j++) {
+				snapshot[i][j] = cells[i * NUMBER_COLUMN + j];
+			}
+		}
+		return snapshot;
 	}
 
 	@Override
@@ -57,6 +87,16 @@ public class Board1D implements Board {
 		return true;
 	}
 
+	@Override
+	public boolean isEmpty() {
+		for (int cell : cells) {
+			if (cell != EMPTY_CELL) {
+				return false;
+			}
+		}
+		return true;
+	}
+
 	// Check if the winning game and it there are no Winner -> return 0
 	@Override
 	public int checkWinner() {
@@ -71,8 +111,9 @@ public class Board1D implements Board {
 		// That's why the wining pattern need to -1 to have the correct position in
 		// cells
 		for (int[] winPattern : winPatterns) {
-			if (cells[winPattern[0] - 1] == cells[winPattern[1] - 1]
-					& cells[winPattern[1] - 1] == cells[winPattern[2] - 1]) {
+			if (cells[winPattern[0] - 1] != EMPTY_CELL
+					&& cells[winPattern[0] - 1] == cells[winPattern[1] - 1]
+					&& cells[winPattern[1] - 1] == cells[winPattern[2] - 1]) {
 				return cells[winPattern[0] - 1];
 			}
 		}

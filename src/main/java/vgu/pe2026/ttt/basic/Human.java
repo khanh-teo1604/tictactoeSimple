@@ -1,15 +1,15 @@
 package vgu.pe2026.ttt.basic;
 
-import static vgu.pe2026.ttt.basic.Constant.NOT_INTEGER_MOVE;
-
 import java.util.Scanner;
+
+import vgu.pe2026.ttt.basic.Constant.PlayerType;
 
 public class Human extends Player {
 
 	private Scanner scanner;
 
-	public Human(int symbol, Scanner scanner) {
-		super(symbol);
+	public Human(PlayerType type, Scanner scanner) {
+		super(type);
 		// TODO Auto-generated constructor stub
 		this.scanner = scanner;
 	}
@@ -17,18 +17,30 @@ public class Human extends Player {
 	@Override
 	public int makeMove(Board board) {
 		int move;
-		System.out.print("Enter your move: ");
-		try {
-			move = Integer.parseInt(scanner.nextLine());
-		} catch (NumberFormatException e) {
-			// TODO: handle exception
-			return NOT_INTEGER_MOVE;
+		MoveValidator moveValidator = new MoveValidator(board);
+		while (true) {
+			String input = scanner.nextLine();
+			if (input.equals("q")) {
+				return -1;
+			}
+			if (input.equals("n")) {
+				return -2;
+			}
+			try {
+				move = Integer.parseInt(input);
+				String invalidMoveMessage = moveValidator.getInvalidMoveMessage(move);
+				if (invalidMoveMessage.isEmpty()) {
+					return move;
+				}
+				System.out.println(invalidMoveMessage);
+				continue;
+			} catch (NumberFormatException e) {
+				// TODO: handle exception
+				System.out.println(MoveValidator.INVALID_NUMBER_MESSAGE);
+
+			}
 		}
-		return move;
+
 	}
 
-	@Override
-	public String namePlayerType() {
-		return "Human";
-	}
 }

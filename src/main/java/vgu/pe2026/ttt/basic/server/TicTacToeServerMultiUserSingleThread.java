@@ -1,0 +1,29 @@
+package vgu.pe2026.ttt.basic.server;
+
+import java.io.IOException;
+import java.net.ServerSocket;
+import java.net.Socket;
+
+public class TicTacToeServerMultiUserSingleThread {
+    private static final int DEFAULT_PORT = 1604;
+
+    public static void main(String[] args) throws IOException {
+        new TicTacToeServerMultiUserSingleThread().start(DEFAULT_PORT);
+    }
+
+    public void start(int port) throws IOException {
+        try (ServerSocket serverSocket = new ServerSocket(port)) {
+            // System.out.println("Tic-Tac-Toe single-thread request server started on port
+            // " + port);
+
+            // It will called socket.close() automatically
+            while (true) {
+                try (Socket socket = serverSocket.accept()) {
+                    TicTacToeServer.handleRequest(socket);
+                } catch (IOException e) {
+                    System.out.println("Request error: " + e.getMessage());
+                }
+            }
+        }
+    }
+}

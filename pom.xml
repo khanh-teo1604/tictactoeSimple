@@ -46,10 +46,42 @@
       <configuration>
         <archive>
           <manifest>
-            <mainClass>vgu.pe2026.ttt.basic.Game</mainClass>
+            <mainClass>vgu.pe2026.ttt.basic.Main</mainClass>
           </manifest>
         </archive>
       </configuration>
+      <executions>
+        <execution>
+          <id>client-jar</id>
+          <phase>package</phase>
+          <goals>
+            <goal>jar</goal>
+          </goals>
+          <configuration>
+            <classifier>client</classifier>
+            <archive>
+              <manifest>
+                <mainClass>vgu.pe2026.ttt.basic.client.TicTacToeClient</mainClass>
+              </manifest>
+            </archive>
+          </configuration>
+        </execution>
+        <execution>
+          <id>server-jar</id>
+          <phase>package</phase>
+          <goals>
+            <goal>jar</goal>
+          </goals>
+          <configuration>
+            <classifier>server</classifier>
+            <archive>
+              <manifest>
+                <mainClass>vgu.pe2026.ttt.basic.server.TicTacToeServer</mainClass>
+              </manifest>
+            </archive>
+          </configuration>
+        </execution>
+      </executions>
     </plugin>
   </plugins>
 </build>
