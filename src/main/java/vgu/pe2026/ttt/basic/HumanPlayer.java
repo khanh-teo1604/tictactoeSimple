@@ -4,13 +4,12 @@ import java.util.Scanner;
 
 import vgu.pe2026.ttt.basic.Constant.PlayerType;
 
-public class Human extends Player {
+public class HumanPlayer extends Player {
 
 	private Scanner scanner;
 
-	public Human(PlayerType type, Scanner scanner) {
-		super(type);
-		// TODO Auto-generated constructor stub
+	public HumanPlayer(Scanner scanner) {
+		super(PlayerType.HUMAN);
 		this.scanner = scanner;
 	}
 

@@ -7,22 +7,22 @@ import java.util.Map;
 
 import vgu.pe2026.ttt.basic.Constant.Setting;
 
-final class NonceChallenge {
+public class NonceChallenge {
     private static final int NONCE_BOUND = 1_000_000;
     private static final long DECLINE_TIME_MILLIS = Setting.DECLINE_TIME * 1000L;
     private static final SecureRandom RANDOM = new SecureRandom();
     private static final Map<String, Long> NONCES_DATABASE = new HashMap<>();
     private static long lastCleanupTime = System.currentTimeMillis();
 
-    final String nonce;
-    final String createdTime;
+    public final String nonce;
+    public final String createdTime;
 
     NonceChallenge(String nonce, String createdTime) {
         this.nonce = nonce;
         this.createdTime = createdTime;
     }
 
-    static NonceChallenge create(long createdTime) {
+    public static NonceChallenge create(long createdTime) {
         cleanupExpiredNoncesIfDue(createdTime);
 
         String nonce;
@@ -34,7 +34,7 @@ final class NonceChallenge {
         return new NonceChallenge(nonce, createdTimeText);
     }
 
-    static boolean accept(String nonce, String createdTimeText, long currentTime) {
+    public static boolean accept(String nonce, String createdTimeText, long currentTime) {
         cleanupExpiredNoncesIfDue(currentTime);
 
         Long createdTime = parseCreatedTime(createdTimeText);

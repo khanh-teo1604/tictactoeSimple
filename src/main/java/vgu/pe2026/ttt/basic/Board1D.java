@@ -17,6 +17,12 @@ public class Board1D implements Board {
 	}
 
 	@Override
+	public void setCells(int[] allCells) {
+		// TODO Auto-generated method stub
+		System.arraycopy(allCells, 0, this.cells, 0, allCells.length);
+	}
+
+	@Override
 	public void setCells(int[][] allCells) {
 		for (int i = 0; i < NUMBER_ROWS; i++) {
 			System.arraycopy(allCells[i], 0, cells, i * NUMBER_COLUMN, allCells[i].length);
@@ -52,13 +58,21 @@ public class Board1D implements Board {
 	}
 
 	@Override
-	public int[][] getCells() {
+	public int[][] get2DCells() {
 		int[][] snapshot = new int[NUMBER_ROWS][NUMBER_COLUMN];
 		for (int i = 0; i < NUMBER_ROWS; i++) {
 			for (int j = 0; j < NUMBER_COLUMN; j++) {
 				snapshot[i][j] = cells[i * NUMBER_COLUMN + j];
 			}
 		}
+		return snapshot;
+	}
+
+	@Override
+	public int[] get1DCells() {
+		// TODO Auto-generated method stub
+		int[] snapshot = new int[cells.length];
+		System.arraycopy(cells, 0, snapshot, 0, cells.length);
 		return snapshot;
 	}
 

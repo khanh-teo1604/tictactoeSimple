@@ -5,6 +5,7 @@ import static vgu.pe2026.ttt.basic.Constant.Setting.NUMBER_COLUMN;
 import static vgu.pe2026.ttt.basic.Constant.Setting.NUMBER_ROWS;
 
 import vgu.pe2026.ttt.basic.Constant.PlayerType;
+import vgu.pe2026.ttt.basic.Constant.Setting;
 
 public class Board2D implements Board {
 
@@ -22,6 +23,19 @@ public class Board2D implements Board {
     public void setCells(int[][] allCells) {
         for (int i = 0; i < NUMBER_ROWS; i++) {
             System.arraycopy(allCells[i], 0, cells[i], 0, allCells[i].length);
+        }
+    }
+
+    @Override
+    public void setCells(int[] allCells) {
+        // TODO Auto-generated method stub
+        for (int row = 0; row < Setting.NUMBER_ROWS; row++) {
+            System.arraycopy(
+                    allCells,
+                    row * Setting.NUMBER_COLUMN,
+                    cells[row],
+                    0,
+                    Setting.NUMBER_COLUMN);
         }
     }
 
@@ -53,11 +67,22 @@ public class Board2D implements Board {
     }
 
     @Override
-    public int[][] getCells() {
+    public int[][] get2DCells() {
         int[][] snapshot = new int[NUMBER_ROWS][NUMBER_COLUMN];
         for (int i = 0; i < NUMBER_ROWS; i++) {
             System.arraycopy(cells[i], 0, snapshot[i], 0, NUMBER_COLUMN);
         }
+        return snapshot;
+    }
+
+    @Override
+    public int[] get1DCells() {
+        // TODO Auto-generated method stub
+
+        int[] snapshot = new int [NUMBER_ROWS * NUMBER_COLUMN];
+        for (int i = 0; i < NUMBER_ROWS; i++) {
+			System.arraycopy(cells[i], 0, snapshot, i * NUMBER_COLUMN, NUMBER_COLUMN);
+		}
         return snapshot;
     }
 

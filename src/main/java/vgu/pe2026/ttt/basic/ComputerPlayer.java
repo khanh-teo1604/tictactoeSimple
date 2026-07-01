@@ -4,12 +4,12 @@ import java.util.Random;
 
 import vgu.pe2026.ttt.basic.Constant.PlayerType;
 
-public class Computer extends Player {
+public class ComputerPlayer extends Player {
 
 	Random random = new Random();
 
-	public Computer(PlayerType type) {
-		super(type);
+	public ComputerPlayer() {
+		super(PlayerType.COMPUTER);
 	}
 
 	@Override

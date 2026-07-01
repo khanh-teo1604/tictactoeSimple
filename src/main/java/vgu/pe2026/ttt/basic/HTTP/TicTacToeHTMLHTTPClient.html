@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title>Tic Tac Toe HTTP Client</title>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+        }
+
+        #board {
+            display: grid;
+            grid-template-columns: repeat(3, 100px);
+            gap: 5px;
+            justify-content: center;
+            margin-top: 20px;
+        }
+
+        .cell {
+            width: 100px;
+            height: 100px;
+            font-size: 40px;
+            cursor: pointer;
+        }
+
+        #message {
+            margin-top: 20px;
+            font-size: 18px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <h1>Tic Tac Toe</h1>
+
+    <button onclick="newGame()">New Game</button>
+
+    <div id="board"></div>
+
+    <div id="message"></div>
+
+    <script>
+        const SERVER_URL = "http://localhost:1604/game";
+
+        const NO_MOVE = -1;
+
+        let board = [0, 0, 0, 0, 0, 0, 0, 0, 0];
+
+        let nonce = "";
+        let createdTime = "";
+        let messageSignature = "";
+
+        function symbol(value) {
+            if (value === 1) return "X";
+            if (value === 2) return "O";
+            return "";
+        }
+
+        function renderBoard() {
+            const boardDiv = document.getElementById("board");
+            boardDiv.innerHTML = "";
+
+            board.forEach((cell, index) => {
+                const button = document.createElement("button");
+
+                button.className = "cell";
+                button.textContent = symbol(cell);
+
+                button.onclick = () => sendMove(index + 1);
+
+                boardDiv.appendChild(button);
+            });
+        }
+
+        async function sendMove(move) {
+
+            const requestBody = {
+                clientMove: move,
+                board: board,
+                nonce: nonce,
+                createdTime: createdTime,
+                messageSignature: messageSignature
+            };
+
+            try {
+
+                const response = await fetch(SERVER_URL, {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/plain"
+                    },
+                    body: JSON.stringify(requestBody)
+                });
+
+                if (!response.ok) {
+                    document.getElementById("message").innerText =
+                        "Wrong board or invalid nonce";
+                    return;
+                }
+
+                const data = await response.json();
+
+                board = data.board;
+                nonce = data.nonce;
+                createdTime = data.createdTime;
+                messageSignature = data.messageSignature;
+
+                renderBoard();
+
+                document.getElementById("message").innerText =
+                    data.message;
+
+                if (
+                    data.status === "GAME_OVER" ||
+                    data.status === "QUIT_GAME"
+                ) {
+                    document.getElementById("message").innerText =
+                        data.message;
+                }
+
+            } catch (error) {
+                console.error(error);
+                document.getElementById("message").innerText =
+                    "Cannot connect to server";
+            }
+        }
+
+
+        function newGame() {
+            board = [0, 0, 0, 0, 0, 0, 0, 0, 0];
+            nonce = "";
+            createdTime = "";
+            messageSignature = "";
+
+            sendMove(NO_MOVE);
+        }
+
+        renderBoard();
+
+        newGame();
+    </script>
+
+</body>
+
+</html>

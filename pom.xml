@@ -20,6 +20,11 @@
             <version>6.0.3</version>
             <scope>test</scope>
         </dependency>
+      <dependency>
+        <groupId>com.fasterxml.jackson.core</groupId>
+        <artifactId>jackson-databind</artifactId>
+        <version>2.20.0</version>
+    </dependency>
   </dependencies>
 
   <build>
@@ -61,7 +66,7 @@
             <classifier>client</classifier>
             <archive>
               <manifest>
-                <mainClass>vgu.pe2026.ttt.basic.client.TicTacToeClient</mainClass>
+                <mainClass>vgu.pe2026.ttt.basic.HTTP.TicTacToeHTTPClient</mainClass>
               </manifest>
             </archive>
           </configuration>
@@ -76,7 +81,7 @@
             <classifier>server</classifier>
             <archive>
               <manifest>
-                <mainClass>vgu.pe2026.ttt.basic.server.TicTacToeServer</mainClass>
+                <mainClass>vgu.pe2026.ttt.basic.HTTP.TicTacToeHTTPServer</mainClass>
               </manifest>
             </archive>
           </configuration>

@@ -5,11 +5,15 @@ import vgu.pe2026.ttt.basic.server.MessageSignature;
 public interface Board {
     public void setCells(int[][] allCells);
 
+    public void setCells(int[] allCells);
+
     public void display();
 
     public String displayBoard();
 
-    public int[][] getCells();
+    public int[][] get2DCells();
+
+    public int[] get1DCells();
 
     public boolean isMoveWithinTheRange(int move);
 
@@ -23,7 +27,7 @@ public interface Board {
 
     public default String toPayload() {
         StringBuilder payload = new StringBuilder();
-        for (int[] row : getCells()) {
+        for (int[] row : get2DCells()) {
             for (int cell : row) {
                 payload.append(cell).append(',');
             }

@@ -8,10 +8,10 @@ import java.util.Scanner;
 
 import vgu.pe2026.ttt.basic.Board;
 import vgu.pe2026.ttt.basic.Board1D;
-import vgu.pe2026.ttt.basic.Human;
+import vgu.pe2026.ttt.basic.HumanPlayerFactory;
+import vgu.pe2026.ttt.basic.Player;
 import vgu.pe2026.ttt.basic.Constant.GameStatus;
 import vgu.pe2026.ttt.basic.Constant.Setting;
-import vgu.pe2026.ttt.basic.Constant.PlayerType;
 
 public class TicTacToeClient {
     private static final String DEFAULT_HOST = "localhost";
@@ -35,7 +35,7 @@ public class TicTacToeClient {
     public void start(String host, int port) throws IOException {
         try (Scanner scanner = new Scanner(System.in)) {
             System.out.println("Hello!");
-            Human human = new Human(PlayerType.HUMAN, scanner);
+            Player human = new HumanPlayerFactory(scanner).createPlayer();
             if (playTurnWithServer(host, port, NO_MOVE)) {
                 return;
             }
@@ -105,7 +105,7 @@ public class TicTacToeClient {
     }
 
     private void writeCells(DataOutputStream output) throws IOException {
-        for (int[] row : board.getCells()) {
+        for (int[] row : board.get2DCells()) {
             for (int cell : row) {
                 output.writeInt(cell);
             }

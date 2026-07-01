@@ -36,11 +36,9 @@ public class Main {
 		Board1D board = new Board1D();
 
 		List<Player> allPlayers = new ArrayList<>();
-
-		for (PlayerType playerType : PlayerType.values()) {
-			allPlayers.add(Player.create(playerType, scanner));
-		}
-
+		allPlayers.add(new HumanPlayerFactory(scanner).createPlayer());
+		allPlayers.add(new ComputerPlayerFactory().createPlayer());
+		
 		Game gameEngine = new Game(board);
 		GameStatus status = GameStatus.GAME_RUNNING;
 		System.out.println("Hello!");

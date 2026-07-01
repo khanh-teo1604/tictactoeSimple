@@ -7,10 +7,10 @@ import java.net.Socket;
 
 import vgu.pe2026.ttt.basic.Board;
 import vgu.pe2026.ttt.basic.Board1D;
-import vgu.pe2026.ttt.basic.Computer;
 import vgu.pe2026.ttt.basic.Constant.GameStatus;
 import vgu.pe2026.ttt.basic.Constant.PlayerType;
 import vgu.pe2026.ttt.basic.Constant.Setting;
+import vgu.pe2026.ttt.basic.ComputerPlayerFactory;
 import vgu.pe2026.ttt.basic.Game;
 import vgu.pe2026.ttt.basic.GameMoveResult;
 
@@ -73,7 +73,7 @@ public class TicTacToeServer {
                 return;
             }
 
-            int computerMove = new Computer(PlayerType.COMPUTER).makeMove(board);
+            int computerMove = new ComputerPlayerFactory().createPlayer().makeMove(board);
             GameMoveResult result = gameEngine.playMove(computerMove, PlayerType.COMPUTER.getplayerTypeSymbol());
 
             if (result.getStatus() == GameStatus.GAME_OVER) {
@@ -117,7 +117,7 @@ public class TicTacToeServer {
     }
 
     private static void writeCells(DataOutputStream output, Board board) throws IOException {
-        for (int[] row : board.getCells()) {
+        for (int[] row : board.get2DCells()) {
             for (int cell : row) {
                 output.writeInt(cell);
             }
